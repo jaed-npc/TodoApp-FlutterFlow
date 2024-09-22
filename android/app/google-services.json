@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "57828322430",
+    "project_id": "todo-scxvrd",
+    "storage_bucket": "todo-scxvrd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57828322430:android:f01f3614ae4b7d26083c2f",
+        "android_client_info": {
+          "package_name": "com.mycompany.todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDadRRrreL5zkgQnhDHZB-jRaCDSj1ZfZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
