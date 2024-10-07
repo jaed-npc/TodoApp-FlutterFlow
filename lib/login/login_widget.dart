@@ -169,7 +169,7 @@ class _LoginWidgetState extends State<LoginWidget>
                                                               .primaryText,
                                                       letterSpacing: 0.0,
                                                     ),
-                                            hintText: 'Email...',
+                                            hintText: 'Username...',
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium

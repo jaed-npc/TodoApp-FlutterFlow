@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'onboarding_widget.dart' show OnboardingWidget;
 import 'package:flutter/material.dart';
@@ -20,7 +21,13 @@ class OnboardingModel extends FlutterFlowModel<OnboardingWidget> {
   TextEditingController? textController2;
   final textFieldMask2 = MaskTextInputFormatter(mask: '(###) ###-####');
   String? Function(BuildContext, String?)? textController2Validator;
+  // State field(s) for Emailinput widget.
+  FocusNode? emailinputFocusNode;
+  TextEditingController? emailinputTextController;
+  String? Function(BuildContext, String?)? emailinputTextControllerValidator;
   DateTime? datePicked;
+  // Stores action output result for [Backend Call - API (ToDoMailSend)] action in Button widget.
+  ApiCallResponse? emailsent;
 
   @override
   void initState(BuildContext context) {}
@@ -32,5 +39,8 @@ class OnboardingModel extends FlutterFlowModel<OnboardingWidget> {
 
     textFieldFocusNode2?.dispose();
     textController2?.dispose();
+
+    emailinputFocusNode?.dispose();
+    emailinputTextController?.dispose();
   }
 }
