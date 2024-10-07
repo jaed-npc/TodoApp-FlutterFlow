@@ -1,4 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -34,6 +35,13 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
 
     _model.textController2 ??= TextEditingController();
     _model.textFieldFocusNode2 ??= FocusNode();
+
+    _model.emailinputTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      (_model.emailinputFocusNode?.hasFocus ?? false).toString(),
+      'to',
+    ));
+    _model.emailinputFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
@@ -77,7 +85,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                             Text(
                               'Profile',
                               style: FlutterFlowTheme.of(context)
-                                  .headlineLarge
+                                  .displayLarge
                                   .override(
                                     fontFamily: 'Inter',
                                     letterSpacing: 0.0,
@@ -393,6 +401,97 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                             inputFormatters: [_model.textFieldMask2],
                           ),
                         ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: TextFormField(
+                            controller: _model.emailinputTextController,
+                            focusNode: _model.emailinputFocusNode,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              '_model.emailinputTextController',
+                              const Duration(milliseconds: 2000),
+                              () => safeSetState(() {}),
+                            ),
+                            autofocus: false,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              labelStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Inter',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    letterSpacing: 0.0,
+                                  ),
+                              hintText: 'Email...',
+                              hintStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Inter',
+                                    fontSize: 18.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: FlutterFlowTheme.of(context).error,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: FlutterFlowTheme.of(context).error,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              filled: true,
+                              fillColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              contentPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  24.0, 26.0, 24.0, 26.0),
+                              suffixIcon: _model
+                                      .emailinputTextController!.text.isNotEmpty
+                                  ? InkWell(
+                                      onTap: () async {
+                                        _model.emailinputTextController
+                                            ?.clear();
+                                        safeSetState(() {});
+                                      },
+                                      child: const Icon(
+                                        Icons.clear,
+                                        size: 25.0,
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .labelLarge
+                                .override(
+                                  fontFamily: 'Inter',
+                                  letterSpacing: 0.0,
+                                ),
+                            cursorColor:
+                                FlutterFlowTheme.of(context).primaryText,
+                            validator: _model.emailinputTextControllerValidator
+                                .asValidator(context),
+                          ),
+                        ),
                         FFButtonWidget(
                           onPressed: () async {
                             final datePickedDate = await showDatePicker(
@@ -478,13 +577,19 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        await currentUserReference!
-                            .update(createUsersRecordData(
-                          displayName: _model.textController1.text,
-                          birthday: _model.datePicked,
-                        ));
+                        _model.emailsent = await ToDoMailSendCall.call(
+                          to: valueOrDefault<String>(
+                            _model.emailinputTextController.text,
+                            'to',
+                          ),
+                          subject: 'Welcome to our app!',
+                          text:
+                              'Hi welcome to our app! We\'re excited to have you on board. Let us know if you need any help getting started.',
+                        );
 
-                        context.goNamed('tasks');
+                        context.goNamed('GetEmailPage');
+
+                        safeSetState(() {});
                       },
                       text: 'Complete Profile',
                       options: FFButtonOptions(
